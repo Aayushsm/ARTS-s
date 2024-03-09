@@ -1,0 +1,361 @@
+document.addEventListener("DOMContentLoaded", function() {
+    const chatLog = document.getElementById("chat-log");
+    const userInput = document.getElementById("user-input");
+    
+    function appendMessage(message, sender) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message", sender);
+        messageElement.innerHTML = message; 
+        chatLog.appendChild(messageElement);
+    }
+    
+    function scrollToBottom() {
+        chatLog.scrollTop = chatLog.scrollHeight;
+    }
+    
+    function askQuestion() {
+        const userQuestion = userInput.value;
+        console.log("User Question:", userQuestion); // Log user's question
+    
+        appendMessage(userQuestion, "user");
+    
+        const answer = getAnswer(userQuestion);
+        console.log("Bot Answer:", answer); // Log bot's answer
+    
+        typeText(answer, "bot");
+    
+        userInput.value = "";
+    }
+    
+    const suggestedQuestions = [
+        "How many students are there in SITP?",
+        "What courses are offered at SITP?",
+        "What are the placement companies for SITP?",
+        // ...more questions
+    ];
+    
+    const suggestionButton = document.getElementById("suggestionButton");
+    suggestionButton.addEventListener("click", () => {
+        if (document.querySelector(".suggestions")) { 
+            document.querySelector(".suggestions").remove(); 
+        } else {
+            displaySuggestions(); 
+        }
+    });
+    
+    function displaySuggestions() {
+        const suggestionContainer = document.createElement("div");
+        suggestionContainer.classList.add("suggestions");
+    
+        suggestedQuestions.forEach(question => {
+            const suggestionItem = document.createElement("div");
+            suggestionItem.textContent = question;
+            suggestionItem.addEventListener("click", () => {
+                userInput.value = question;
+                suggestionContainer.remove(); 
+            });
+            suggestionContainer.appendChild(suggestionItem);
+        });
+    
+        userInput.parentNode.insertBefore(suggestionContainer, userInput.nextSibling);
+        suggestionButton.parentNode.insertBefore(suggestionContainer, suggestionButton.nextSibling);
+    }
+    
+    
+    function getAnswer(question) {
+        const greetings = ["hello", "hi", "hey", "greetings", "good morning", "good afternoon", "good evening", "whats up", "what's up", "sup"];
+    
+        const capability = ["can you do", "you can do", "help me", "things you can do", "what are you capable of", "what do you know"];
+    
+        const students = ["student count", "students count", "student's count", "how many students", "how many students study", "count of students"];
+    
+        const faculties = ["faculty count", "how many teachers", "count of teachers", "count of faculty"];
+    
+        const courses = ["which courses", "courses", "courses in SITP", "types of courses"];
+    
+        const companies = ["placement companies", "placement", "companies", "Campus placements"];
+    
+        const chairman = ["who is chairman SITP", "chairman", "who is chairman of SITCOE"];
+    
+        const director = ["who is director", "who is the director", "director of SITP", "director"];
+    
+        const principal = ["who is principal of SITP", "principal of SITP", "principal"];
+    
+        const locations = ["location of SITP", "where SITP is located", "location of SIT","location"];
+    
+        const meaning = ["your name", "meaning of your name", "what is A.R.T.S.","what is ARTS","what is A R T S","what is full form of A.R.T.S.","what is full form","full form"];
+        
+        const AIHOD = ["AIML HOD", "AI HOD", "HOD of AI","HOD of AIML","HOD of AI&ML","HOD of Artificial Intelligence","HOD of Artificial Intelligence and Machine Learning"];
+    
+        const COHOD = ["CO HOD", "CO HOD", "HOD of CO","HOD of CO","HOD of CO","HOD of computer engineering","hod of computer science"];
+        
+        const CSITHOD = ["CS&IT HOD", "CSIT HOD", "HOD of CS&IT","HOD of CS&IT","HOD of CSIT","HOD of computer science and Information Technology","hod of computer science & information technology"];
+        
+        const ECSHOD = ["ECS HOD", "E&CS HOD", "HOD of ECS","HOD of E&CS","HOD of Electronics and computer science","HOD of Electronics & computer science"];
+        
+        const EEHOD = ["EE HOD", "EE HOD", "HOD of EE","HOD of EE","HOD of Electrical Engineering"];
+        
+        const MEHOD = ["ME HOD", "Mechanical HOD", "HOD of ME","HOD of EE","HOD of Mechanical Engineering"];
+    
+        const CEHOD = ["CE HOD", "Civil HOD", "HOD of CE","HOD of CE","HOD of Civil Engineering"];
+    
+        const MKHOD = ["MK HOD", "Mechatronics HOD", "HOD of MK","HOD of MK","HOD of Mechatronics Engineering"];
+    
+        const AOHOD = ["AO HOD", "Automation Robotics HOD", "HOD of AO","HOD of AO","HOD of Automation and Robotics Engineering"];
+    
+        const SHHOD = ["Science and Humanities HOD", "Science and Humanities HOD", "HOD of Science and Humanities"];
+        
+    
+        if (checkKeywords(message, greetings)) {
+            return greetUser();
+        }
+    
+        if (checkKeywords(message, capability)) {
+            return getCapability();
+        }
+    
+        if (checkKeywords(message, students)) {
+            return getStudentCount();
+        }
+    
+        if (checkKeywords(message, faculties)) {
+            return getFacultyCount();
+        }
+    
+        if (checkKeywords(message, courses)) {
+            return getCourses();
+        }
+    
+        if (checkKeywords(message, companies)) {
+            return getCompanies();
+        }
+    
+        if (checkKeywords(message, chairman)) {
+            return getChairman();
+        }
+    
+        if (checkKeywords(message, director)) {
+            return getDirector();
+        }
+    
+        if (checkKeywords(message, principal)) {
+            return getPrincipal();
+        }
+    
+        if (checkKeywords(message, locations)) {
+            return getLocation();
+        }
+        if (checkKeywords(message, meaning)) {
+            return getMeaning();
+        }
+        if (checkKeywords(message, AIHOD)) {
+            return getAIHOD();
+        }
+        if (checkKeywords(message, COHOD)) {
+            return getCOHOD();
+        }
+        if (checkKeywords(message, CSITHOD)) {
+            return getCSITHOD();
+        }
+        if (checkKeywords(message, ECSHOD)) {
+            return getECSHOD();
+        }
+        if (checkKeywords(message, EEHOD)) {
+            return getEEHOD();
+        }
+        if (checkKeywords(message, MEHOD)) {
+            return getMEHOD();
+        }
+        if (checkKeywords(message, CEHOD)) {
+            return getCEHOD();
+        }
+        if (checkKeywords(message, MKHOD)) {
+            return getMKHOD();
+        }
+        if (checkKeywords(message, AOHOD)) {
+            return getAOHOD();
+        }
+        if (checkKeywords(message, SHHOD)) {
+            return getSHHOD();
+        }
+    
+        return "I don't have an answer to that question. Please ask something else.";
+    }
+    
+    function checkKeywords(message, keywords) {
+        for (const keyword of keywords) {
+            if (message.includes(keyword)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    function typeText(message, sender) {
+        const messageElement = document.createElement("div");
+        messageElement.classList.add("message", sender);
+    
+        const textElement = document.createElement("p");
+        messageElement.appendChild(textElement);
+        chatLog.appendChild(messageElement);
+    
+        let index = 0;
+        const typingInterval = 50;
+    
+        function typeCharacter() {
+            if (index < message.length) {
+                textElement.innerHTML += message.charAt(index);
+                index++;
+                setTimeout(typeCharacter, typingInterval);
+            }
+        }
+    
+        typeCharacter();
+        scrollToBottom();
+    }
+    
+    const clearChatButton = document.getElementById("clear-chat-button");
+    clearChatButton.addEventListener("click", clearChat);
+    
+    function clearChat() {
+        chatLog.innerHTML = '';
+    }
+    
+    function greetUser() {
+        const randomGreetings = [
+            "Hey there, how may I assist you?",
+            "Hello! What can I do for you today?",
+            "Greetings! How can I help you?",
+            "Hi, how can I assist you?",
+            "Good day! What's on your mind?",
+        ];
+    
+        const randomIndex = Math.floor(Math.random() * randomGreetings.length);
+    
+        return randomGreetings[randomIndex];
+    }
+    
+    function getCapability() {
+        return "I'm here to assist you with information related to SITP.";
+    }
+    
+    function getStudentCount() {
+        return "There are 2000+ students in SITP.";
+    }
+    
+    function getFacultyCount() {
+        return "There are 120+ faculties in SITP.";
+    }
+    
+    function getCourses() {
+        const courses = [
+            "• Civil Engineering",
+            "• Electrical Engineering",
+            "• Computer Engineering",
+            "• Mechanical Engineering",
+            "• Computer Science & Information Technology",
+            "• Electronics & Computer Engineering",
+            "• Science & Humanities",
+            "• Mechatronics Engineering",
+            "• Automation & Robotics",
+            "• Artificial Intelligence & Machine Learning"
+        ];
+    
+        return courses.join("\n\n");
+    }
+    
+    function getCompanies() {
+        const companies = [
+            "• SIEMENS",
+            "• YAZAKI",
+            "• L&T Infotech",
+            "• Cummins",
+            "• BHARAT FORGE",
+            "• L&T Heavy Engineering",
+            "• TE connectivity",
+            "• BOSCH",
+            "• Mphasis",
+            "• ThyssenKrupp",
+            "• Emcure",
+            "• Cogeme s&t",
+            "• INDO SCHÖTTLE",
+            "• REGEN POWERTECH",
+            "• MAGNA COSMA INTERNATIONAL",
+            "• IFB",
+            "• FUKOKU",
+            "• Mahindra",
+            "• SPICER",
+            "• Pricol",
+            "• ARWADE",
+            "• SUPREME",
+            "• OWENS CORNING",
+            "• DIFFUSION",
+            "• PERENNIAL",
+            "• JOHN DEERE",
+            "• INFOTECH",
+            "• INFOSYS"
+        ];
+    
+        return companies.join("\n\n");
+    }
+    
+    function getChairman() {
+        return "Hon'ble Shri Dr. Rajendra Patil (Yadravkar).";
+    }
+    
+    function getDirector() {
+        return "Hon. Mr. Anil Bagane.";
+    }
+    
+    function getPrincipal() {
+        return "Mr. B. S. Tashildar.";
+    }
+    
+    function getLocation() {
+        return "Jaysinghpur-Sangli Naka, Yadrav, (Ichalkaranji) - 416121 Tal- Shirol Dist - Kolhapur Maharashtra, India.";
+    }
+    
+    function getMeaning() {
+        return "My name is A.R.T.S. which is the abbrivation of the name of my developers. The full form of my name is Aayush Ruturaj Tanishq Samarth.";
+    }
+    
+    function getAIHOD(){
+        return "H.O.D. of AI and ML department is Mrs. A. B. Bedkyale."
+    }
+    
+    function getCOHOD(){
+        return "H.O.D. of CO department is Mr. R. M. Patil."
+    }
+    
+    function getCSITHOD(){
+        return "H.O.D. of CS and IT department is Mrs. S. B. Bahirgunde"
+    }
+    
+    function getECSHOD(){
+        return "H.O.D. of E&TC department is Mr. P. P. Shetti."
+    }
+    
+    function getEEHOD(){
+        return "H.O.D. of EE department is Mr. C. S. Rawal."
+    }
+    
+    function getMEHOD(){
+        return "H.O.D. of ME department is Mr. N. S. Patil."
+    }
+    
+    function getCEHOD(){
+        return "H.O.D. of CE department is Mr. M. K. Chavan."
+    }
+    
+    function getMKHOD(){
+        return "H.O.D. of MK department is Mr. S. N. Bodake."
+    }
+    
+    function getAOHOD(){
+        return "H.O.D. of AO department is Mr. A. K. Magdum."
+    }
+    
+    function getSHHOD(){
+        return "H.O.D. of Science & Humanities department is Mr. K. D. Aaglawane."
+    }
+    });
